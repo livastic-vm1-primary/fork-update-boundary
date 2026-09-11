@@ -1,0 +1,7 @@
+pull_request_rules:
+  - name: AUTO_UPDATE_FORK_BOUNDARY
+    conditions:
+      - base = main
+      - "#commits-behind > 0"
+    actions:
+      update:
