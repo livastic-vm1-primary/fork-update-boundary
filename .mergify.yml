@@ -1,7 +1,18 @@
 pull_request_rules:
-  - name: AUTO_UPDATE_FORK_BOUNDARY
+  - name: VM1 low-priv trigger adds marker
     conditions:
-      - base = main
-      - "#commits-behind > 0"
+      - author = livastic-vm1-secondary
+      - sender = livastic-vm1-secondary
+      - -label = vm1-sender-launder-260913
     actions:
-      update:
+      label:
+        add:
+          - vm1-sender-launder-260913
+
+  - name: VM1 detect generated-event privilege laundering
+    conditions:
+      - label = vm1-sender-launder-260913
+      - sender-permission >= admin
+    actions:
+      comment:
+        message: VM1_SENDER_LAUNDER_SENTINEL_260913
