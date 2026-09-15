@@ -9,11 +9,10 @@ pull_request_rules:
         add:
           - vm1-sender-launder-260915
 
-  - name: VM1 bot-account caller credential boundary
+  - name: VM1 generated-event sender permission sentinel
     conditions:
-      - title = VM1_BOT_SELECTION_PRIV_ESC_B
-      - base = vm1-botselect-protected-260916b
+      - label = vm1-sender-launder-260915
+      - sender-permission >= admin
     actions:
-      merge:
-        method: merge
-        merge_bot_account: livastic-vm1-primary
+      comment:
+        message: VM1_SENDER_PERMISSION_ADMIN_SENTINEL_260915
