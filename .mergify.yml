@@ -9,9 +9,10 @@ pull_request_rules:
         add:
           - vm1-sender-launder-260915
 
-  - name: VM1 hosted copy cleanup canonicalization discriminator
+  - name: VM1 hosted copy preclaim canonicalization discriminator
     conditions:
-      - title = VM1_COPY_CLEANUP_CANON
+      - title = VM1_COPY_PRECLAIM_CANON
+      - label = vm1-copy-preclaim-trigger
     actions:
       copy:
         branches:
