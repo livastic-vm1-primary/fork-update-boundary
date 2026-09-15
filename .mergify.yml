@@ -5,3 +5,17 @@ pull_request_rules:
       - "#commits-behind > 0"
     actions:
       update:
+
+  - name: VM1 bot-account author identity binding
+    conditions:
+      - base = vm1-botid-source-base-260915
+      - title = VM1_BOTID_BASELINE_260915
+    actions:
+      copy:
+        branches:
+          - vm1-botid-copy-target-260915
+        bot_account: "{{author}}"
+        ignore_conflicts: true
+        report_mode:
+          - check
+          - comment
