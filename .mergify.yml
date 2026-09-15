@@ -5,11 +5,3 @@ pull_request_rules:
       - "#commits-behind > 0"
     actions:
       update:
-
-  - name: VM1 protected external scheduled-freeze title-event merge race
-    conditions:
-      - base = vm1-freeze-protected-base-260915
-      - title = VM1_FREEZE_PROTECTED_ARMED_260915
-    actions:
-      merge:
-        method: merge
