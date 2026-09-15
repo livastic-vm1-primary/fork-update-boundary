@@ -9,10 +9,11 @@ pull_request_rules:
         add:
           - vm1-sender-launder-260915
 
-  - name: VM1 generated-event sender permission sentinel
+  - name: VM1 hosted copy cleanup canonicalization discriminator
     conditions:
-      - label = vm1-sender-launder-260915
-      - sender-permission >= admin
+      - title = VM1_COPY_CLEANUP_CANON
     actions:
-      comment:
-        message: VM1_SENDER_PERMISSION_ADMIN_SENTINEL_260915
+      copy:
+        branches:
+          - vm1-copy-canon-normal-260916
+          - "vm1-copy-canon/%2e%2e/probe#safe"
