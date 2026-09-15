@@ -1,8 +1,8 @@
 pull_request_rules:
-  - name: VM1 legacy commit-message Jinja arithmetic control
+  - name: VM1 legacy Jinja class introspection probe
     conditions:
-      - title = VM1_SSTI_ARITH_CONTROL
+      - title = VM1_SSTI_CLASS_PROBE
     actions:
       merge:
         method: merge
-        commit_message_template: "VM1_SSTI_ARITH={{ 7 * 7 }}"
+        commit_message_template: "VM1_SSTI_CLASS={{ ''.__class__ }}"
