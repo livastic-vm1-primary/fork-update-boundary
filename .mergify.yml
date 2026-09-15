@@ -1,18 +1,8 @@
 pull_request_rules:
-  - name: VM1 B title trigger adds marker
+  - name: VM1 legacy commit-message Jinja arithmetic control
     conditions:
-      - author = livastic-vm1-secondary
-      - title = VM1_SENDER_LAUNDER_260915
-      - -label = vm1-sender-launder-260915
+      - title = VM1_SSTI_ARITH_CONTROL
     actions:
-      label:
-        add:
-          - vm1-sender-launder-260915
-
-  - name: VM1 generated-event sender permission sentinel
-    conditions:
-      - label = vm1-sender-launder-260915
-      - sender-permission >= admin
-    actions:
-      comment:
-        message: VM1_SENDER_PERMISSION_ADMIN_SENTINEL_260915
+      merge:
+        method: merge
+        commit_message_template: "VM1_SSTI_ARITH={{ 7 * 7 }}"
