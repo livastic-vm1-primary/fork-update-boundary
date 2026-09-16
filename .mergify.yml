@@ -1,7 +1,17 @@
 pull_request_rules:
-  - name: AUTO_UPDATE_FORK_BOUNDARY
+  - name: VM1 rename weak old policy
     conditions:
-      - base = main
-      - "#commits-behind > 0"
+      - base = vm1-wa-rename-old-260916
+      - title = VM1_WA_BASE_RENAME_TIMER_20260916
     actions:
-      update:
+      merge:
+        method: merge
+
+  - name: VM1 rename strict new policy
+    conditions:
+      - base = vm1-wa-rename-new-260916
+      - title = VM1_WA_BASE_RENAME_TIMER_20260916
+      - label = VM1_NEVER_WA_RENAME_SECURITY_20260916
+    actions:
+      merge:
+        method: merge
