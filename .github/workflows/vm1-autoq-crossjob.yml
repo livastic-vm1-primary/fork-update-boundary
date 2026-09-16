@@ -1,0 +1,82 @@
+name: VM1 AutoQ Cross-Job Identity
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Controlled VM1 mode
+        required: true
+        default: baseline
+        type: choice
+        options:
+          - baseline
+          - exploit
+
+permissions:
+  contents: read
+
+jobs:
+  noisy:
+    if: ${{ inputs.mode == 'baseline' }}
+    runs-on: ubuntu-latest
+    env:
+      MERGIFY_TOKEN: ${{ secrets.MERGIFY_TOKEN }}
+      MERGIFY_TEST_JOB_NAME: vm1-autoq-noisy-A
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install current pytest-mergify
+        run: |
+          python -m pip install --disable-pip-version-check -q pytest pytest-mergify
+          python - <<'PY'
+          import importlib.metadata
+          print('pytest-mergify-version=' + importlib.metadata.version('pytest-mergify'))
+          PY
+      - name: Build flaky evidence on one SHA and one job identity
+        shell: bash
+        run: |
+          set +e
+          for i in 1 2 3 4 5; do
+            echo "VM1 noisy execution $i/5"
+            VM1_AUTOQ_BEHAVIOR=flaky VM1_RUN_INDEX="$i" pytest -q tests/test_vm1_autoq.py
+          done
+          exit 0
+
+  security:
+    runs-on: ubuntu-latest
+    env:
+      MERGIFY_TOKEN: ${{ secrets.MERGIFY_TOKEN }}
+      MERGIFY_TEST_JOB_NAME: vm1-autoq-security-B
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install current pytest-mergify
+        run: |
+          python -m pip install --disable-pip-version-check -q pytest pytest-mergify
+          python - <<'PY'
+          import importlib.metadata
+          print('pytest-mergify-version=' + importlib.metadata.version('pytest-mergify'))
+          PY
+      - name: Run security identity
+        shell: bash
+        env:
+          VM1_MODE: ${{ inputs.mode }}
+        run: |
+          if [ "$VM1_MODE" = baseline ]; then
+            count=5
+            behavior=pass
+          else
+            count=1
+            behavior=fail
+          fi
+          rc=0
+          for i in $(seq 1 "$count"); do
+            echo "VM1 security execution $i/$count behavior=$behavior"
+            VM1_AUTOQ_BEHAVIOR="$behavior" VM1_RUN_INDEX="$i" pytest -q tests/test_vm1_autoq.py || rc=$?
+          done
+          exit "$rc"
+
