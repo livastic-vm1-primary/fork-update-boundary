@@ -1,11 +1,7 @@
-merge_queue:
-  max_parallel_checks: 1
-queue_rules:
-  - name: vm1-fast-forward-review-parity
-    batch_size: 1
-    batch_max_wait_time: 0 seconds
-    merge_method: fast-forward
-    queue_conditions:
-      - title = VM1_FAST_FORWARD_REVIEW_PARITY_20260916
-    merge_conditions:
-      - check-success = vm1-ff-hold-never-20260916
+pull_request_rules:
+  - name: AUTO_UPDATE_FORK_BOUNDARY
+    conditions:
+      - base = main
+      - "#commits-behind > 0"
+    actions:
+      update:
