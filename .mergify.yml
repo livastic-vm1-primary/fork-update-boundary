@@ -1,7 +1,8 @@
-pull_request_rules:
-  - name: AUTO_UPDATE_FORK_BOUNDARY
-    conditions:
-      - base = main
-      - "#commits-behind > 0"
-    actions:
-      update:
+queue_rules:
+  - name: vm1-head-delete-finalizer
+    batch_size: 1
+    batch_max_wait_time: 0 seconds
+    queue_conditions:
+      - title = VM1_HEAD_BRANCH_DELETE_QUEUE_20260916
+    merge_conditions:
+      - title = VM1_HEAD_BRANCH_DELETE_QUEUE_20260916
